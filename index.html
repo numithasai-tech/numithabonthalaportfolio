@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonthala Numitha — Digital Marketing Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#171626;
+    --ink-2:#211f36;
+    --card:#252241;
+    --marigold:#f5a623;
+    --coral:#ff5d5d;
+    --mint:#7fd9c4;
+    --text:#f4efe6;
+    --muted:#a6a1c2;
+    --line:rgba(244,239,230,0.12);
+    --radius:18px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:14px; height:2px;
+    background:var(--marigold);
+    display:inline-block;
+  }
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.01em;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(23,22,38,0.75);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:16px 32px;}
+  .brand{font-family:'Space Grotesk'; font-weight:700; font-size:1.05rem;}
+  .brand span{color:var(--marigold);}
+  .navlinks{display:flex; gap:28px; font-size:0.88rem; color:var(--muted);}
+  .navlinks a{text-decoration:none; transition:color .2s;}
+  .navlinks a:hover{color:var(--text);}
+  .navlinks a:focus-visible, a:focus-visible, button:focus-visible{outline:2px solid var(--mint); outline-offset:3px;}
+
+  /* HERO */
+  header.hero{
+    padding:96px 0 80px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:'';
+    position:absolute; top:-200px; right:-160px;
+    width:520px; height:520px; border-radius:50%;
+    background:radial-gradient(circle, rgba(245,166,35,0.22), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.05;
+    margin:18px 0 20px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(100deg, var(--marigold), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.lede{
+    color:var(--muted);
+    font-size:1.05rem;
+    max-width:46ch;
+    margin-bottom:32px;
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    padding:13px 22px;
+    border-radius:999px;
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .18s ease, box-shadow .18s ease;
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--marigold); color:#1b1626; font-weight:600;}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(245,166,35,0.3);}
+  .btn-ghost{border-color:var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--mint); color:var(--mint); transform:translateY(-2px);}
+
+  /* PHONE CAROUSEL */
+  .phone{
+    justify-self:center;
+    width:280px; height:560px;
+    background:#0f0e1c;
+    border-radius:42px;
+    border:6px solid #33304f;
+    position:relative;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);
+  }
+  .phone::before{
+    content:'';
+    position:absolute; top:14px; left:50%; transform:translateX(-50%);
+    width:70px; height:8px; border-radius:6px; background:#33304f;
+  }
+  .phone-screen{
+    position:absolute; inset:34px 10px 24px;
+    border-radius:26px;
+    overflow:hidden;
+    background:var(--ink-2);
+  }
+  .slide{
+    position:absolute; inset:0;
+    padding:26px 20px;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    opacity:0; transform:scale(1.04);
+    transition:opacity .6s ease, transform .6s ease;
+    text-decoration:none;
+    pointer-events:none;
+  }
+  .slide.active{opacity:1; transform:scale(1); pointer-events:auto;}
+  a.slide{cursor:pointer;}
+  a.slide:hover{filter:brightness(1.12);}
+  .slide-cta{
+    font-family:'JetBrains Mono'; font-size:0.7rem;
+    color:var(--marigold); margin-top:12px;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .slide .tag{font-family:'JetBrains Mono'; font-size:0.68rem; color:var(--ink); background:var(--mint); width:fit-content; padding:4px 10px; border-radius:999px; margin-bottom:12px;}
+  .slide h4{font-size:1.35rem; margin-bottom:8px;}
+  .slide p{font-size:0.86rem; color:var(--muted);}
+  .slide-visual{
+    position:absolute; top:22px; right:18px; left:18px;
+    height:150px;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transform:translateY(14px) scale(0.94);
+    transition:opacity .6s ease .1s, transform .6s ease .1s;
+  }
+  .slide.active .slide-visual{opacity:1; transform:translateY(0) scale(1);}
+  .slide-visual svg{width:100%; height:100%; overflow:visible;}
+  .slide-1{background:linear-gradient(160deg, #3a2d5c, #211f36);}
+  .slide-2{background:linear-gradient(160deg, #4a2f3f, #211f36);}
+  .slide-3{background:linear-gradient(160deg, #2f4a44, #211f36);}
+  .slide-4{background:linear-gradient(160deg, #4a3a24, #211f36);}
+  .slide-5{background:linear-gradient(160deg, #2f3a4a, #211f36);}
+  .slide-6{background:linear-gradient(160deg, #45304a, #211f36);}
+  .dots{position:absolute; bottom:10px; left:0; right:0; display:flex; justify-content:center; gap:6px;}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--line); transition:background .3s, width .3s;}
+  .dot.active{background:var(--marigold); width:18px; border-radius:3px;}
+
+  /* MARQUEE */
+  .marquee-wrap{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:18px 0; overflow:hidden; white-space:nowrap;
+  }
+  .marquee{display:inline-flex; gap:40px; animation:scroll 28s linear infinite;}
+  .marquee span{font-family:'JetBrains Mono'; font-size:0.85rem; color:var(--muted); display:flex; align-items:center; gap:10px;}
+  .marquee span::after{content:'•'; color:var(--coral);}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion: reduce){ .marquee{animation:none;} .slide{transition:none;} }
+
+  section{padding:90px 0;}
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:clamp(1.8rem, 3.4vw, 2.4rem); margin-top:14px;}
+
+  /* EXPERIENCE */
+  .exp-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:36px;
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:32px;
+  }
+  .exp-meta h3{font-size:1.25rem; margin-bottom:6px;}
+  .exp-meta .role{color:var(--marigold); font-family:'JetBrains Mono'; font-size:0.8rem;}
+  .exp-meta .dur{color:var(--muted); font-size:0.85rem; margin-top:10px;}
+  .exp-list{list-style:none; display:grid; gap:12px;}
+  .exp-list li{position:relative; padding-left:22px; color:#dcd8ee; font-size:0.95rem;}
+  .exp-list li::before{content:'→'; position:absolute; left:0; color:var(--mint);}
+
+  /* SKILLS */
+  .tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+  .tab{
+    font-family:'JetBrains Mono'; font-size:0.78rem;
+    padding:10px 18px; border-radius:999px;
+    border:1px solid var(--line); color:var(--muted);
+    background:transparent; cursor:pointer;
+    transition:all .2s;
+  }
+  .tab.active{background:var(--text); color:var(--ink); border-color:var(--text);}
+  .skill-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px;}
+  .skill-pane{display:none;}
+  .skill-pane.active{display:grid;}
+  .skill-chip{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; font-size:0.9rem; color:var(--text);
+  }
+
+  /* PROJECTS */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  .proj-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:30px; position:relative; overflow:hidden;
+  }
+  .proj-card::before{
+    content:'';
+    position:absolute; top:0; left:0; width:100%; height:4px;
+  }
+  .proj-card.p1::before{background:linear-gradient(90deg, var(--marigold), var(--coral));}
+  .proj-card.p2::before{background:linear-gradient(90deg, var(--mint), var(--marigold));}
+  .proj-card h3{font-size:1.2rem; margin:8px 0 14px;}
+  .proj-card ul{list-style:none; display:grid; gap:10px;}
+  .proj-card li{padding-left:20px; position:relative; color:#dcd8ee; font-size:0.92rem;}
+  .proj-card li::before{content:'▸'; position:absolute; left:0; color:var(--marigold);}
+
+  /* LANG + CONTACT */
+  .lang-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .lang-badge{
+    padding:12px 22px; border-radius:12px; background:var(--card); border:1px solid var(--line);
+    font-family:'JetBrains Mono'; font-size:0.85rem;
+  }
+  footer{
+    border-top:1px solid var(--line);
+    padding:60px 0 40px;
+  }
+  .foot-grid{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;}
+  .foot-grid h2{font-size:1.8rem;}
+  .foot-links{display:flex; gap:16px; flex-wrap:wrap;}
+  .copyline{color:var(--muted); font-size:0.8rem; margin-top:36px; font-family:'JetBrains Mono';}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .phone{order:-1; width:220px; height:440px;}
+    .exp-card{grid-template-columns:1fr;}
+    .proj-grid{grid-template-columns:1fr;}
+    .foot-grid{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Numitha<span>.</span></div>
+    <div class="navlinks">
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Digital Marketing · Nandyal, AP</div>
+      <h1>Bonthala Numitha<br>builds campaigns that <em>actually convert.</em></h1>
+      <p class="lede">Digital marketing professional working across social media, SEO, paid ads, and AI-powered content — turning a blank content calendar into reach, engagement, and enquiries.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:numithasai@gmail.com">Email Numitha ↗</a>
+        <a class="btn btn-ghost" href="#projects">View project work</a>
+      </div>
+    </div>
+
+    <div class="phone" aria-label="Rotating showcase of marketing skills">
+      <div class="phone-screen">
+        <div class="slide slide-1 active">
+          <div class="slide-visual">
+            <svg viewBox="0 0 200 150" fill="none">
+              <rect x="30" y="20" width="90" height="110" rx="14" fill="#3a2d5c" stroke="var(--mint)" stroke-width="2"/>
+              <rect x="55" y="12" width="90" height="110" rx="14" fill="#463668" stroke="var(--marigold)" stroke-width="2"/>
+              <rect x="80" y="4" width="90" height="110" rx="14" fill="#544280" stroke="var(--coral)" stroke-width="2.5"/>
+              <circle cx="105" cy="30" r="9" fill="var(--marigold)"/>
+              <rect x="95" y="48" width="50" height="6" rx="3" fill="var(--text)" opacity="0.7"/>
+              <rect x="95" y="60" width="34" height="6" rx="3" fill="var(--text)" opacity="0.4"/>
+              <path d="M92 90 L108 78 L120 88 L138 72" stroke="var(--mint)" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <span class="tag">Social</span>
+          <h4>Reels & Carousels</h4>
+          <p>Content calendars, reels strategy, and carousel design built for reach.</p>
+        </div>
+        <div class="slide slide-2">
+          <div class="slide-visual">
+            <svg viewBox="0 0 200 150" fill="none">
+              <path d="M40 70 L90 50 L90 100 L40 90 Z" fill="var(--coral)"/>
+              <rect x="30" y="65" width="12" height="30" rx="4" fill="var(--text)"/>
+              <path d="M90 50 L150 30 L150 120 L90 100 Z" fill="#5c3542"/>
+              <circle cx="150" cy="75" r="4" fill="var(--marigold)"/>
+              <path d="M60 100 C 62 115, 74 118, 78 108" stroke="var(--text)" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M100 40 Q 115 20 132 34" stroke="var(--marigold)" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M100 108 Q 115 126 132 114" stroke="var(--marigold)" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <circle cx="168" cy="50" r="3" fill="var(--mint)"/>
+              <circle cx="175" cy="75" r="3" fill="var(--mint)"/>
+              <circle cx="168" cy="100" r="3" fill="var(--mint)"/>
+            </svg>
+          </div>
+          <span class="tag">Paid</span>
+          <h4>Google & Meta Ads</h4>
+          <p>Keyword research, ad copy, and conversion tracking to lift ROI.</p>
+        </div>
+        <div class="slide slide-3">
+          <div class="slide-visual">
+            <svg viewBox="0 0 200 150" fill="none">
+              <rect x="35" y="70" width="14" height="40" rx="3" fill="var(--mint)"/>
+              <rect x="58" y="55" width="14" height="55" rx="3" fill="var(--marigold)"/>
+              <rect x="81" y="35" width="14" height="75" rx="3" fill="var(--coral)"/>
+              <rect x="104" y="60" width="14" height="50" rx="3" fill="var(--mint)"/>
+              <circle cx="150" cy="55" r="26" fill="none" stroke="var(--text)" stroke-width="4"/>
+              <line x1="169" y1="74" x2="188" y2="93" stroke="var(--text)" stroke-width="5" stroke-linecap="round"/>
+              <path d="M138 55 L146 63 L162 45" stroke="var(--marigold)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="tag">SEO</span>
+          <h4>Search & Visibility</h4>
+          <p>On-page SEO and website content management for organic growth.</p>
+        </div>
+        <div class="slide slide-4">
+          <div class="slide-visual">
+            <svg viewBox="0 0 200 150" fill="none">
+              <path d="M100 20 L112 60 L152 72 L112 84 L100 124 L88 84 L48 72 L88 60 Z" fill="var(--marigold)"/>
+              <path d="M155 30 L160 44 L174 49 L160 54 L155 68 L150 54 L136 49 L150 44 Z" fill="var(--coral)"/>
+              <path d="M45 90 L49 100 L59 104 L49 108 L45 118 L41 108 L31 104 L41 100 Z" fill="var(--mint)"/>
+              <circle cx="100" cy="72" r="6" fill="var(--ink)"/>
+            </svg>
+          </div>
+          <span class="tag">AI</span>
+          <h4>AI-Powered Marketing</h4>
+          <p>AI content, image & video generation, and prompt-driven automation.</p>
+        </div>
+        <a class="slide slide-5" href="mailto:numithasai@gmail.com" aria-label="Email Numitha">
+          <div class="slide-visual">
+            <svg viewBox="0 0 200 150" fill="none">
+              <rect x="40" y="45" width="120" height="80" rx="10" fill="#2a3648" stroke="var(--mint)" stroke-width="2.5"/>
+              <path d="M42 50 L100 90 L158 50" stroke="var(--marigold)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="150" cy="105" r="16" fill="var(--coral)"/>
+              <path d="M144 105 L149 110 L157 100" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="tag">Inbox</span>
+          <h4>Email Marketing</h4>
+          <p>Newsletters and lifecycle campaigns that keep audiences warm.</p>
+          <span class="slide-cta">Tap to email Numitha ↗</span>
+        </a>
+        <div class="slide slide-6">
+          <div class="slide-visual">
+            <svg viewBox="0 0 200 150" fill="none">
+              <rect x="35" y="20" width="100" height="120" rx="10" fill="#3a2c46" stroke="var(--marigold)" stroke-width="2"/>
+              <rect x="50" y="90" width="10" height="30" rx="2" fill="var(--mint)"/>
+              <rect x="66" y="70" width="10" height="50" rx="2" fill="var(--marigold)"/>
+              <rect x="82" y="50" width="10" height="70" rx="2" fill="var(--coral)"/>
+              <rect x="98" y="80" width="10" height="40" rx="2" fill="var(--mint)"/>
+              <rect x="50" y="36" width="58" height="6" rx="3" fill="var(--text)" opacity="0.6"/>
+              <path d="M140 40 Q160 30 175 45 Q188 58 172 68" stroke="var(--marigold)" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M167 62 L172 68 L179 60" stroke="var(--marigold)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="tag">Reporting</span>
+          <h4>Performance & Analytics</h4>
+          <p>Campaign reports that turn clicks and reach into clear decisions.</p>
+        </div>
+        <div class="dots">
+          <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee">
+    <span>Instagram</span><span>Facebook</span><span>SEO</span><span>Google Ads</span>
+    <span>Meta Ads Manager</span><span>Content Calendars</span><span>AI Prompt Engineering</span>
+    <span>Reels Strategy</span><span>Email Marketing</span>
+    <span>Instagram</span><span>Facebook</span><span>SEO</span><span>Google Ads</span>
+    <span>Meta Ads Manager</span><span>Content Calendars</span><span>AI Prompt Engineering</span>
+    <span>Reels Strategy</span><span>Email Marketing</span>
+  </div>
+</div>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Experience</div>
+      <h2>Two roles, hands-on across the full funnel.</h2>
+    </div>
+    <div class="exp-card">
+      <div class="exp-meta">
+        <h3>Geetha Computers</h3>
+        <div class="role">Digital Marketing Executive</div>
+        <div class="dur">Sept 2025 — Present<br>9 Months</div>
+      </div>
+      <ul class="exp-list">
+        <li>Managed social media platforms including Instagram and Facebook.</li>
+        <li>Created promotional posters, reels, and marketing content.</li>
+        <li>Assisted in SEO optimization and website content management.</li>
+        <li>Worked on Google Ads and Meta Ads campaign management.</li>
+        <li>Designed AI-powered marketing creatives and promotional materials.</li>
+        <li>Monitored campaign performance and generated marketing reports.</li>
+      </ul>
+    </div>
+
+    <div class="exp-card" style="margin-top:24px;">
+      <div class="exp-meta">
+        <h3>National Computers</h3>
+        <div class="role">Digital Marketing Executive</div>
+        <div class="dur">Sept 2024 — Aug 2025<br>1 Year</div>
+      </div>
+      <ul class="exp-list">
+        <li>Managed social media platforms such as Facebook, Instagram, YouTube, and LinkedIn, and planned monthly content calendars.</li>
+        <li>Created engaging posts, reels, banners, and promotional videos.</li>
+        <li>Designed marketing creatives using Canva and Adobe Photoshop.</li>
+        <li>Wrote marketing copy for social media, advertisements, and promotional campaigns.</li>
+        <li>Assisted in running Meta (Facebook & Instagram) ad campaigns to generate leads.</li>
+        <li>Analyzed campaign performance using Meta Insights and Google Analytics, and prepared performance reports.</li>
+        <li>Used AI tools such as ChatGPT, Gemini, and Canva AI to create content, generate marketing ideas, write captions, and improve productivity.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Skills</div>
+      <h2>Four toolkits, one campaign.</h2>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="marketing">Marketing</button>
+      <button class="tab" data-tab="social">Social Media</button>
+      <button class="tab" data-tab="ai">AI Marketing</button>
+      <button class="tab" data-tab="soft">Soft Skills</button>
+    </div>
+
+    <div class="skill-grid skill-pane active" id="marketing">
+      <div class="skill-chip">Social Media Marketing (Instagram, Facebook, LinkedIn, YouTube)</div>
+      <div class="skill-chip">Search Engine Optimization (SEO)</div>
+      <div class="skill-chip">Google Ads</div>
+      <div class="skill-chip">Meta Ads Manager</div>
+      <div class="skill-chip">Meta Business Suite</div>
+      <div class="skill-chip">Content Marketing</div>
+      <div class="skill-chip">Email Marketing</div>
+    </div>
+
+    <div class="skill-grid skill-pane" id="social">
+      <div class="skill-chip">Content Planning</div>
+      <div class="skill-chip">Content Calendar Management</div>
+      <div class="skill-chip">Reels Strategy</div>
+      <div class="skill-chip">Short-form Video Marketing</div>
+      <div class="skill-chip">Carousel Design</div>
+      <div class="skill-chip">Visual Content Creation</div>
+    </div>
+
+    <div class="skill-grid skill-pane" id="ai">
+      <div class="skill-chip">AI Content Creation</div>
+      <div class="skill-chip">AI Prompt Engineering</div>
+      <div class="skill-chip">AI Image Generation</div>
+      <div class="skill-chip">AI Video Generation</div>
+      <div class="skill-chip">Marketing Automation using AI</div>
+      <div class="skill-chip">AI Research</div>
+      <div class="skill-chip">AI App and Website Generation</div>
+    </div>
+
+    <div class="skill-grid skill-pane" id="soft">
+      <div class="skill-chip">Communication</div>
+      <div class="skill-chip">Creativity</div>
+      <div class="skill-chip">Time Management</div>
+      <div class="skill-chip">Adaptability</div>
+      <div class="skill-chip">Critical Thinking</div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Projects</div>
+      <h2>Case work worth a second look.</h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card p1">
+        <div class="eyebrow" style="margin-bottom:0;">Organic</div>
+        <h3>Social Media Growth Campaign</h3>
+        <ul>
+          <li>Created and managed social content for Instagram and Facebook.</li>
+          <li>Designed engaging posts and planned content calendars.</li>
+          <li>Improved reach with trend-based content and hashtag strategy.</li>
+        </ul>
+      </div>
+      <div class="proj-card p2">
+        <div class="eyebrow" style="margin-bottom:0;">Paid</div>
+        <h3>Google Ads Campaign</h3>
+        <ul>
+          <li>Planned and monitored Google Ads campaigns end to end.</li>
+          <li>Performed keyword research and optimized ad copy.</li>
+          <li>Tracked conversions and analyzed performance to improve ROI.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="languages">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Languages</div>
+      <h2>Working across three languages.</h2>
+    </div>
+    <div class="lang-row">
+      <div class="lang-badge">English</div>
+      <div class="lang-badge">Telugu</div>
+      <div class="lang-badge">Hindi</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="eyebrow">Get in touch</div>
+        <h2>Let's plan the next campaign.</h2>
+      </div>
+      <div class="foot-links">
+        <a class="btn btn-primary" href="mailto:numithasai@gmail.com">numithasai@gmail.com</a>
+        <span class="btn btn-ghost" style="cursor:default;">Nandyal, Andhra Pradesh</span>
+      </div>
+    </div>
+    <div class="copyline">© 2026 Bonthala Numitha — Digital Marketing Portfolio</div>
+  </div>
+</footer>
+
+<script>
+  // Phone carousel
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  let current = 0;
+  function showSlide(i){
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+  }
+  setInterval(() => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }, 3200);
+
+  // Skill tabs
+  const tabs = document.querySelectorAll('.tab');
+  const panes = document.querySelectorAll('.skill-pane');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panes.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
